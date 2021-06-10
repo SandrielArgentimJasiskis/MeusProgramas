@@ -1,0 +1,248 @@
+<html>
+    <head>
+        <title> Calculadora </title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div class="Calc">
+        <div class="Aba">
+            <button class="Key_Exit" id="Key_Exit"> X </button>
+        </div>
+        <div class="Software">
+        <input type="text" class="Calc.result" id="Calc.result" value="0" disabled>
+        <hr>
+            <input type="button" class="Key_Clear" id="Key_Clear" value="C" onclick="Calc_ClearKeys();this.blur();"></input>
+            <input type="button" class="Key_Remove" id="Key_Remove" value="<" onclick="Calc_RemoveKey();this.blur();"></input>
+            <input type="button" class="Key_Sqrt" id="Key_Sqrt" value="√" onclick="Calc_SqrtKey();this.blur();"></input>
+            <input type="button" class="Key_Div" id="Key_Div" value="/" onclick="Calc_AddKey('/');this.blur();"></input>
+                <br>
+            <input type="button" class="Key_1" id="Key_1" value="1" onclick="Calc_AddKey(1);this.blur();"></input>
+            <input type="button" class="Key_2" id="Key_2" value="2" onclick="Calc_AddKey(2);this.blur();"></input>
+            <input type="button" class="Key_3" id="Key_3" value="3" onclick="Calc_AddKey(3);this.blur();"></input>
+            <input type="button" class="Key_Mult" id="Key_Mult" value="*" onclick="Calc_AddKey('*');this.blur();"></input>
+                <br>
+            <input type="button" class="Key_4" id="Key_4" value="4" onclick="Calc_AddKey(4);this.blur();"></input>
+            <input type="button" class="Key_5" id="Key_5" value="5" onclick="Calc_AddKey(5);this.blur();"></input>
+            <input type="button" class="Key_6" id="Key_6" value="6" onclick="Calc_AddKey(6);this.blur();"></input>
+            <input type="button" class="Key_Sub" id="Key_Sub" value="-" onclick="Calc_AddKey('-');this.blur();"></input>
+                <br>
+            <input type="button" class="Key_7" id="Key_7" value="7" onclick="Calc_AddKey(7);this.blur();"></input>
+            <input type="button" class="Key_8" id="Key_8" value="8" onclick="Calc_AddKey(8);this.blur();"></input>
+            <input type="button" class="Key_9" id="Key_9" value="9" onclick="Calc_AddKey(9);this.blur();"></input>
+            <input type="button" class="Key_Sum" id="Key_Sum" value="+" onclick="Calc_AddKey('+');this.blur();"></input>
+                <br>
+            <input type="button" class="Key_PI" id="Key_PI" value="π" onclick="Calc_PI_Key();this.blur();">
+            <input type="button" class="Key_0" id="Key_0" value="0" onclick="Calc_AddKey(0);this.blur();"></input>
+            <input type="button" class="Key_," id="Key_," value="," onclick="Calc_AddKey(',');this.blur();"></input>
+            <input type="button" class="Key_Equal" id="Key_Equal" value="=" onclick="Calc_EqualKey();this.blur();"></input>
+        </div>
+        </div>
+
+        <style type="text/css">
+            .Calc {
+                border: 1px solid #000000;
+                width: 60%;
+                padding-bottom: 8px;
+            }
+            .Aba {
+                height: 48px;
+                background-color: gray;
+            }
+            .Key_Exit {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2em;
+                z-index: 2;
+                float: right;
+            }
+			.Key_Exit: hover {
+				background-color: red;
+				color: #fff;
+			}
+            hr {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+            input[type="text"] {
+                margin-left: 1%;
+                margin-top: 5px;
+                width: 98%;
+                height: 72px;
+                font-size: 2.0em;
+            }
+            input[type="button"] {
+                margin-top: 5px;
+                width: 24%;
+                height: 96px;
+                font-size: 2.0em;
+            }
+            .Key_Clear, .Key_1, .Key_4, .Key_7, .Key_Pi {
+                margin-left: 1%;
+            }
+        </style>
+
+        <script type="text/javascript">
+            Virgula = 0;
+            Sqrt = 0;
+
+			document.addEventListener("keydown", function () {
+				l = 0;
+				while (l <= 9) {
+					if (event.keyCode == l+48) {
+						Calc_AddKey(l);
+					}
+					l = l + 1;
+				}
+				
+				if (event.keyCode == 188) {
+					Calc_AddKey(',');
+				}
+				
+				if (event.keyCode == 27) {
+					Calc_ClearKeys();
+				}
+				
+				if (event.keyCode == 8) {
+					Calc_RemoveKey();
+				}
+				if (event.keyCode == 13) {
+					Calc_EqualKey();
+				}
+				if (event.keyCode == 187) {
+					Calc_EqualKey();
+				}
+				
+			});
+			
+
+            function Calc_AddKey(KeyPressed) {
+                if (KeyPressed === "+" || KeyPressed === "-" || KeyPressed === "*" || KeyPressed === "/") {
+                    if (Sqrt == 1) {
+                        Sqrt = 0;
+                        document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + ")";
+                    }
+   
+                    Virgula = 0;
+                }
+
+                if (document.getElementById("Calc.result").value.slice(-1) == ")") {
+                    if (KeyPressed != "+" || KeyPressed != "-" || KeyPressed != "*" || KeyPressed != "/") {
+                        document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + "*";
+                    }
+                }
+
+                if (document.getElementById("Calc.result").value === "0" && KeyPressed != ",") {
+                    if (KeyPressed === "/" || KeyPressed === "*" || KeyPressed === "-" || KeyPressed === "+") {
+                        document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + KeyPressed;
+                    } else {
+                        document.getElementById("Calc.result").value = KeyPressed;
+                    }
+                } else {
+                    if (Virgula != 1 || KeyPressed != ",") {
+                        document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + KeyPressed;
+                    }
+
+                    if (KeyPressed == ",") {
+                        Virgula = 1;
+                    }
+                }
+
+                PenultDigito = document.getElementById("Calc.result").value.slice(-2, -1);
+                UltDigito = document.getElementById("Calc.result").value.slice(-1);
+                if (PenultDigito == "+" || PenultDigito == "-" || PenultDigito == "*" || PenultDigito == "/") {
+                    if (UltDigito == "+" || UltDigito == "-" || UltDigito == "*" || UltDigito == "/") {
+                        document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.slice(0, -2) + UltDigito;
+                    }
+                }
+
+                if (KeyPressed == ",") {
+                    if (document.getElementById("Calc.result").value.slice(-2) ==  "+," || document.getElementById("Calc.result").value.slice(-2) ==  "-," || document.getElementById("Calc.result").value.slice(-2) ==  "*," || document.getElementById("Calc.result").value.slice(-2) ==  "/,") {
+                        document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.slice(0, -1) + "0" + document.getElementById("Calc.result").value.slice(-1);
+                    }
+                }
+            }
+
+            function Calc_ClearKeys() {
+                Virgula = 0;
+                Sqrt = 0;
+                document.getElementById("Calc.result").value = "0";
+            }
+
+            function Calc_RemoveKey() {
+                Calc_Size = document.getElementById("Calc.result").value.length;
+
+                if (document.getElementById("Calc.result").value.slice(-1) == ")") {
+                    Sqrt = 1;
+                }
+
+                if (document.getElementById("Calc.result").value.slice(-5) == "sqrt(") {
+                    Sqrt = 0;
+                    document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.slice(0, -5);
+                } else {
+                    if (document.getElementById("Calc.result").value.slice(-1) == ",") {
+                        Virgula = 0;
+                    }
+
+                    document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.slice(0, Calc_Size-1);
+                }
+            
+                if (document.getElementById("Calc.result").value === "") {
+                    document.getElementById("Calc.result").value = "0";
+                }
+            }
+
+            function Calc_SqrtKey() {
+                if (Sqrt == 1) {
+                    document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + ")*";
+                }
+
+                Sqrt = 1;
+
+                if (document.getElementById("Calc.result").value == "0") {
+                    document.getElementById("Calc.result").value = "sqrt(";
+                } else {
+                    if (document.getElementById("Calc.result").value.slice(-1) != "+" && document.getElementById("Calc.result").value.slice(-1) != "-" && document.getElementById("Calc.result").value.slice(-1) != "*" && document.getElementById("Calc.result").value.slice(-1) != "/") {
+                        document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + "*";
+                    }
+                    document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + "sqrt(";
+                }
+
+                Virgula = 0;
+            }
+
+            function Calc_PI_Key() {
+                if (document.getElementById("Calc.result").value == "0") {
+                    document.getElementById("Calc.result").value = "3,14";
+                } else {
+                    if (document.getElementById("Calc.result").value.slice(-1) != "+" && document.getElementById("Calc.result").value.slice(-1) != "-" && document.getElementById("Calc.result").value.slice(-1) != "*" && document.getElementById("Calc.result").value.slice(-1) != "/" && document.getElementById("Calc.result").value.slice(-1) != "(") {
+                        document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + "*";
+                    }
+                document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + "3,14";
+                }
+
+                Virgula = 1;
+            }
+
+            function Calc_EqualKey() {
+                if (document.getElementById("Calc.result").value.slice(-1) == "+" || document.getElementById("Calc.result").value.slice(-1) == "-" || document.getElementById("Calc.result").value.slice(-1) == "*" || document.getElementById("Calc.result").value.slice(-1) == "/") {
+                    document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.slice(0, -1);
+                }
+
+                if (Sqrt == 1) {
+                    Sqrt = 0;
+                    document.getElementById("Calc.result").value = document.getElementById("Calc.result").value + ")";
+                }
+
+                document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.replace(/,/g, ".");
+                document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.replace(/sqrt\(\)/g, "");
+                document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.replace(/sqrt\(/g, "Math.sqrt(");
+                document.getElementById("Calc.result").value = eval(document.getElementById("Calc.result").value) + "";
+                document.getElementById("Calc.result").value = document.getElementById("Calc.result").value.replace(".", ",");
+
+                if (document.getElementById("Calc.result").value == "undefined" || document.getElelementById("Calc.result").value == "NaN") {
+                    document.getElementById("Calc.result").value = "0";
+                }
+            }
+        </script>
+    </body>
+</html>
