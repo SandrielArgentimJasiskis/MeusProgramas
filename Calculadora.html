@@ -4,7 +4,7 @@
         <meta charset="utf-8">
     </head>
     <body>
-        <div class="Calc">
+        <div id="Calc">
         <div class="Aba">
             <button class="Key_Exit" id="Key_Exit"> X </button>
         </div>
@@ -39,10 +39,11 @@
         </div>
 
         <style type="text/css">
-            .Calc {
+            #Calc {
                 border: 1px solid #000000;
                 width: 60%;
                 padding-bottom: 8px;
+				position: absolute;
             }
             .Aba {
                 height: 48px;
@@ -55,10 +56,6 @@
                 z-index: 2;
                 float: right;
             }
-			.Key_Exit: hover {
-				background-color: red;
-				color: #fff;
-			}
             hr {
                 margin-left: 10px;
                 margin-right: 10px;
@@ -80,18 +77,31 @@
                 margin-left: 1%;
             }
         </style>
-
+		<script src="ClicareArrastar.js"></script>
         <script type="text/javascript">
             Virgula = 0;
             Sqrt = 0;
-
+			Shift = 0;
+			
+			document.addEventListener("keyup", function () {
+				if (event.keyCode == 16) {
+					Shift = 0;
+				}
+			});
+			
 			document.addEventListener("keydown", function () {
 				l = 0;
 				while (l <= 9) {
 					if (event.keyCode == l+48) {
-						Calc_AddKey(l);
+						if (Shift == 0) {
+							Calc_AddKey(l);
+						}
 					}
 					l = l + 1;
+				}
+				
+				if (event.keyCode == 16) {
+					Shift = 1;
 				}
 				
 				if (event.keyCode == 188) {
@@ -109,7 +119,22 @@
 					Calc_EqualKey();
 				}
 				if (event.keyCode == 187) {
-					Calc_EqualKey();
+					if (Shift == 0) {
+						Calc_EqualKey();
+					} else {
+						Calc_AddKey('+');
+					}
+				}
+				if (event.keyCode == 56) {
+					if (Shift == 1) {
+						Calc_AddKey('*');
+					}
+				}
+				if (event.keyCode == 189) {
+					Calc_AddKey('-');
+				}
+				if (event.keyCode == 193) {
+					Calc_AddKey('/');
 				}
 				
 			});
